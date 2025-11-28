@@ -10,8 +10,6 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS_ID = '3f2b5d95-2243-4892-ac19-7c8040616fcd'
-
-        // Docker Hub images
         IMAGE_NAME_SERVER = 'bacemtouil/newapp-master-server'
         IMAGE_NAME_CLIENT = 'bacemtouil/newapp-master-client'
     }
@@ -26,7 +24,7 @@ pipeline {
 
         stage('Build Server Image') {
             steps {
-                dir('server') {
+                dir('Server') {
                     script {
                         dockerImageServer = docker.build("${IMAGE_NAME_SERVER}:latest")
                     }
@@ -36,7 +34,7 @@ pipeline {
 
         stage('Build Client Image') {
             steps {
-                dir('client') {
+                dir('Client') {
                     script {
                         dockerImageClient = docker.build("${IMAGE_NAME_CLIENT}:latest")
                     }
@@ -48,7 +46,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_SERVER}:latest
+                    docker run --rm -v //var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_SERVER}:latest
                     """
                 }
             }
@@ -58,7 +56,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_CLIENT}:latest
+                    docker run --rm -v //var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_CLIENT}:latest
                     """
                 }
             }
@@ -73,6 +71,18 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+        failure {
+            echo 'Pipeline execution failed!'
         }
     }
 }
