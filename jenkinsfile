@@ -5,17 +5,15 @@ pipeline {
     agent any
 
     triggers {
-        // Vérifie le repo toutes les 5 minutes
         pollSCM('H/5 * * * *')
     }
 
     environment {
-        // >>>>> TES DONNÉES PERSONNALISÉES
         DOCKERHUB_CREDENTIALS_ID = '3f2b5d95-2243-4892-ac19-7c8040616fcd'
 
-        // Images Docker Hub (ton compte = bacemtouil)
-        IMAGE_NAME_SERVER = 'bacemtouil/mern-server'
-        IMAGE_NAME_CLIENT = 'bacemtouil/mern-client'
+        // Docker Hub images
+        IMAGE_NAME_SERVER = 'bacemtouil/newapp-master-server'
+        IMAGE_NAME_CLIENT = 'bacemtouil/newapp-master-client'
     }
 
     stages {
@@ -50,7 +48,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL ${IMAGE_NAME_SERVER}:latest
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_SERVER}:latest
                     """
                 }
             }
@@ -60,7 +58,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity LOW,MEDIUM,HIGH,CRITICAL ${IMAGE_NAME_CLIENT}:latest
+                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image ${IMAGE_NAME_CLIENT}:latest
                     """
                 }
             }
