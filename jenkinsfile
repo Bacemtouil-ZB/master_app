@@ -10,15 +10,16 @@ pipeline {
     }
 
     environment {
-        // ID des credentials Docker Hub (Jenkins > Credentials)
-        DOCKERHUB_CREDENTIALS_ID = 'dockerhub-creds'
+        // >>>>> TES DONNÉES PERSONNALISÉES
+        DOCKERHUB_CREDENTIALS_ID = '3f2b5d95-2243-4892-ac19-7c8040616fcd'
 
-        // Noms des images Docker Hub
-        IMAGE_NAME_SERVER = 'zaynebsakh/mern-server'
-        IMAGE_NAME_CLIENT = 'zaynebsakh/mern-client'
+        // Images Docker Hub (ton compte = bacemtouil)
+        IMAGE_NAME_SERVER = 'bacemtouil/mern-server'
+        IMAGE_NAME_CLIENT = 'bacemtouil/mern-client'
     }
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -29,7 +30,6 @@ pipeline {
             steps {
                 dir('server') {
                     script {
-                        // Tag "latest" 
                         dockerImageServer = docker.build("${IMAGE_NAME_SERVER}:latest")
                     }
                 }
