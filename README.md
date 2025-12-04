@@ -1,4 +1,4 @@
-# 🚀 MERN Stack CI/CD Pipeline - Guide Complet et Professionnel
+# 🚀 MERN Stack CI/CD Pipeline 
 
 ## 📋 Table des Matières
 
